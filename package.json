@@ -1,0 +1,21 @@
+{
+  "name": "dynamic_nested",
+  "version": "0.1.0",
+  "description": "Add/Remove nested associations dynamically in forms that generates markup like Phoenix Framework.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Felipe Renan",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "@testing-library/jest-dom": "^4.1.2",
+    "babel-jest": "^24.9.0",
+    "jest": "^24.9.0"
+  },
+  "jest": {
+    "testRegex": "/test/.*_test\\.js$"
+  }
+}
