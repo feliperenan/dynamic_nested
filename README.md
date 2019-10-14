@@ -41,6 +41,8 @@ Everytime a User adds a new row, it is going to generate a new index for that ro
 +1 from the last row on the page. As soon as an User removes a row, all indexes will be updated
 accordingly to reflect their position on the page.
 
+![](example.gif)
+
 ## Instalattion
 ```
 npm install --save dynamic_nested
