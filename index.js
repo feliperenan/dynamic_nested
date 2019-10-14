@@ -14,8 +14,8 @@
  * <div dynamic-nested>
  *   <%= inputs_for @f, :categories, [skip_hidden: true], fn c -> %>
  *     <%= content_tag :div, dynamic_nested_index: c.index do %>
- *       # PS: generate hidden fields inside rows group to handle them easily.
- *       = for {key, value} <- row.hidden do
+ *       # PS: generate hidden fields manually for handling them easily.
+ *       = for {key, value} <- c.hidden do
  *         = hidden_input c, key, value: value, dynamic_nested_field_id: true
  *      <%= text_input c, :name %>
  *       <button type="button" dynamic-nested-remove>Remove</button>
@@ -26,8 +26,8 @@
  *
  * <button type="button" dynamic-nested-add>Add</button>
  *
- * Everytime a User adds a new row, it is going to generate a new index for that row incrementing
- * +1 from the last row on the page. As soon as an User removes a row, all indexes will be updated
+ * Everytime a User adds a new nested, it is going to generate a new index for that nested incrementing
+ * +1 from the last nested on the page. As soon as an User removes one, all indexes will be updated
  * accordingly to reflect their position on the page.
  *
  * Also, make sure to initialize this script after importing it on your application.
@@ -43,7 +43,7 @@
  * * It must contains at least one nested markup rendered on the page since `DinamicNested` will
  *   use it as a template to clone.
  * * You must be using the last version of `Phoenix.HTML` that supports `skip_hidden` fields.
- * * There is no way to whether execute callbacks before/after cloning rows or removing them.
+ * * There is no way to whether execute callbacks before/after cloning nested or removing them yet.
  **/
 class DynamicNested {
   constructor(element) {
@@ -107,8 +107,8 @@ class DynamicNested {
       }
     })
 
-    // When editing the form, the cloned row will have hidden ids. They must be removed from the new
-    // row.
+    // When editing the form, the cloned element will have hidden ids. They must be removed from
+    // the new element.
     const hiddenId = $newNested.querySelector('[dynamic-nested-field-id]')
     if (hiddenId) { $newNested.removeChild(hiddenId) }
 
@@ -116,7 +116,7 @@ class DynamicNested {
     const index = +$lastNested.getAttribute('dynamic-nested-index') + 1
     this.replaceIndex($newNested, index)
 
-    // Add new row on the page.
+    // Add new nested on the page.
     this.element.appendChild($newNested)
 
     // TODO: provide callback to something after adding new nested on the page.
@@ -135,7 +135,7 @@ class DynamicNested {
   }
 
   /**
-   * Replace indexes in `id`, `name` and `for` for all children from the given row element.
+   * Replace indexes in `id`, `name` and `for` for all children from the given nested element.
    *
    * @param {object} element - DOM element.
    * @param {string} index   - The new index that will be used in the attribute name.
@@ -177,11 +177,11 @@ class DynamicNested {
    *
    * Examples
    *
-   *    newAttributeName(<input name="invoice[invoice_rows][0][amount]">, "name", 1)
-   *    => "invoice[invoice_rows][1][amount]"
+   *    newAttributeName(<input name="user[categories][0][name]">, "name", 1)
+   *    => "user[categories][1][name]"
    *
-   *    newAttributeName(<input id="invoice_invoice_rows_0">, "id", 1)
-   *    => "invoice_invoice_rows_1"
+   *    newAttributeName(<input id="user_categories_0">, "id", 1)
+   *    => "user_categories_1"
    **/
   newAttributeName(element, attribute, index) {
     return element.getAttribute(attribute).replace(/[0-9]/g, index)
