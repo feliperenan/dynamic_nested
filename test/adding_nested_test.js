@@ -1,7 +1,7 @@
 import DynamicNested from '../index'
 import '@testing-library/jest-dom/extend-expect'
 
-beforeAll(() => {
+beforeEach(() => {
   document.body.innerHTML =
     `<div dynamic-nested>
       <div dynamic-nested-index="0">
@@ -22,6 +22,10 @@ beforeAll(() => {
     </div>
     <button type="button" dynamic-nested-add>Add more</button>
     `
+})
+
+afterEach(() => {
+  document.body.innerHTML = ''
 })
 
 test('adds a new nested association markup incrementing +1 from the previous index', () => {
@@ -57,5 +61,30 @@ test('adds a new nested association markup incrementing +1 from the previous ind
   expect(element).not.toContainElement(
     element.querySelector('#user_colors_1_id')
   )
+})
+
+test('supports callbacks beforeClone and afterAdd', () => {
+  const element = document.querySelector('[dynamic-nested]')
+
+  const beforeClone = (element) => {
+    element.setAttribute("data-before-clone", true)
+  }
+
+  const afterAdd = (element, newElement) => {
+    element.setAttribute("data-after-added", true)
+    newElement.setAttribute("data-after-added", true)
+  }
+
+  new DynamicNested(element, { beforeClone, afterAdd })
+
+  // Simulates a User clicks on add button.
+  document.querySelector('[dynamic-nested-add]').click()
+
+  const clonedElement = element.querySelector('[dynamic-nested-index="0"]')
+  const newElement = element.querySelector('[dynamic-nested-index="1"]')
+
+  expect(clonedElement).toHaveAttribute('data-before-clone', 'true')
+  expect(clonedElement).toHaveAttribute('data-after-added', 'true')
+  expect(newElement).toHaveAttribute('data-after-added', 'true')
 })
 

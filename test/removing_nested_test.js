@@ -1,7 +1,7 @@
 import DynamicNested from '../index'
 import '@testing-library/jest-dom/extend-expect'
 
-beforeAll(() => {
+beforeEach(() => {
   document.body.innerHTML =
     `<div dynamic-nested>
       <div dynamic-nested-index="0">
@@ -21,27 +21,27 @@ beforeAll(() => {
       </div>
     </div>
     <button type="button" dynamic-nested-add>Add more</button>
-    `
+    `.trim()
 })
 
-describe("removing nested associations", () => {
-  test('removes the clicked nested and rebuild indexes', () => {
-    const element = document.querySelector('[dynamic-nested]')
-    const dynamicNested = new DynamicNested(element)
+test('removes the clicked nested and rebuild indexes and support afterRemove callback', () => {
+  const element = document.querySelector('[dynamic-nested]')
 
-    // Simulates a User clicks on second nested association remove's button.
-    element
-      .querySelector('[dynamic-nested-index="1"]')
-      .querySelector('[dynamic-nested-remove]')
-      .click()
+  const afterRemove = (elements) => {
+    Array.from(elements).forEach(element => element.setAttribute('data-after-remove', true))
+  }
 
-    expect(element.querySelectorAll('[dynamic-nested-index]').length).toBe(2)
+  new DynamicNested(element, { afterRemove })
 
-    expect(element).toContainHTML(
-      '<div dynamic-nested-index="0">'
-    )
-    expect(element).toContainHTML(
-      '<div dynamic-nested-index="1">'
-    )
+  // Simulates a User clicks on second nested association remove's button.
+  element
+    .querySelector('[dynamic-nested-index="1"]')
+    .querySelector('[dynamic-nested-remove]')
+    .click()
+
+  expect(element.querySelectorAll('[dynamic-nested-index]').length).toBe(2)
+
+  Array.from(element.querySelectorAll('[dynamic-nested-index]')).forEach(element => {
+    expect(element).toHaveAttribute('data-after-remove', 'true')
   })
 })
