@@ -2,8 +2,9 @@
   "name": "dynamic_nested",
   "version": "0.1.1",
   "description": "Add/Remove nested associations dynamically in forms that generates markup like Phoenix Framework.",
-  "main": "index.js",
+  "main": "./static/dynamic_nested.js",
   "scripts": {
+    "build": "webpack --mode production",
     "test": "jest"
   },
   "author": "Felipe Renan",
@@ -13,7 +14,13 @@
     "@babel/preset-env": "^7.6.3",
     "@testing-library/jest-dom": "^4.1.2",
     "babel-jest": "^24.9.0",
-    "jest": "^24.9.0"
+    "babel-loader": "^8.0.6",
+    "copy-webpack-plugin": "^5.0.4",
+    "expose-loader": "^0.7.5",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "jest": "^24.9.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9"
   },
   "jest": {
     "testRegex": "/test/.*_test\\.js$"
