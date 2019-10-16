@@ -39,6 +39,22 @@ import DynamicNested from 'dynamic-nested'
 document.querySelectorAll('[dynamic-nested]').forEach(element => DynamicNested(element))
 ```
 
+It supports the following callbacks:
+
+* beforeClone  - You might want to do something before cloning the element.
+* afterAdd     - You might want to do something after adding the new element.
+* afterRemove  - You might want to do something after removing the element.
+
+```JS
+const beforeClone = (element) => { ... }
+const afterAdd    = (element, newElement) => { ... }
+const afterRemove = (elements) => { ... }
+
+document
+  .querySelectorAll('[dynamic-nested]')
+  .forEach(element => DynamicNested(element, { beforeClone, afterAdd, afterRemove }))
+```
+
 Everytime a User adds a new row, it is going to generate a new index for that row incrementing
 +1 from the last row on the page. As soon as an User removes a row, all indexes will be updated
 accordingly to reflect their position on the page.
@@ -53,4 +69,3 @@ npm install --save dynamic_nested
 * It must contains at least one nested markup rendered on the page since `DinamicNested` will
  use it as a template to clone.
 * You must be using the last version of `Phoenix.HTML` that supports `skip_hidden` fields.
-* There is no way to whether execute callbacks before/after cloning rows or removing them.
