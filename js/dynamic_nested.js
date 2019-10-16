@@ -111,11 +111,7 @@ class DynamicNested {
         for(let option of select.options) {
           const cloneSelectOption = Array.from(cloneSelect.options).find(o => o.value == option.value)
 
-          if(cloneSelectOption.selected) {
-            option.selected = true
-          } else {
-            option.selected = false
-          }
+          cloneSelectOption.selected
         }
       } else {
         select.selectedIndex = cloneSelect.selectedIndex

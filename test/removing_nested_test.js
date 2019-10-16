@@ -1,4 +1,4 @@
-import DynamicNested from '../index'
+import DynamicNested from '../js/dynamic_nested'
 import '@testing-library/jest-dom/extend-expect'
 
 beforeEach(() => {
