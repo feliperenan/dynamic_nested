@@ -38,16 +38,30 @@
  * document.querySelectorAll('[dynamic-nested]').forEach(element => DynamicNested(element))
  * ```
  *
+ * It supports the following callbacks:
+ *
+ * * beforeClone  - You might want to do something before cloning the element.
+ * * afterAdd     - You might want to do something after adding the new element.
+ * * afterRemove  - You might want to do something after removing the element.
+ *
+ * ```JS
+ * const beforeClone = (element) => { ... }
+ * const afterAdd    = (element, newElement) => { ... }
+ * const afterRemove = (elements) => { ... }
+ *
+ * new DynamicNested(element, { beforeClone, afterAdd, afterRemove })
+ * ```
+ *
  * ## Know caveats
  *
  * * It must contains at least one nested markup rendered on the page since `DinamicNested` will
  *   use it as a template to clone.
  * * You must be using the last version of `Phoenix.HTML` that supports `skip_hidden` fields.
- * * There is no way to whether execute callbacks before/after cloning nested or removing them yet.
  **/
 class DynamicNested {
-  constructor(element) {
+  constructor(element, options = {}) {
     this.element = element
+    this.options = options
 
     this.toggleRemoveButtonDisplay()
 
@@ -85,7 +99,8 @@ class DynamicNested {
   add($allNested) {
     const $lastNested = $allNested[$allNested.length -1]
 
-    // TODO: provide callback to do something before cloning nested.
+    if (this.options.beforeClone) { this.options.beforeClone($lastNested) }
+
     const $newNested  = $lastNested.cloneNode(true)
 
     // copy selected options from the cloned to the new nested since they are not copied when cloned.
@@ -119,7 +134,7 @@ class DynamicNested {
     // Add new nested on the page.
     this.element.appendChild($newNested)
 
-    // TODO: provide callback to something after adding new nested on the page.
+    if (this.options.afterAdd) { this.options.afterAdd($lastNested, $newNested) }
   }
 
   remove($nested) {
@@ -129,9 +144,9 @@ class DynamicNested {
 
     Array.from($allNested).forEach(($nested, index) => {
       this.replaceIndex($nested, index)
-
-      // TODO: provide callback to something after removing nested on the page.
     })
+
+    if (this.options.afterRemove) { this.options.afterRemove($allNested) }
   }
 
   /**
