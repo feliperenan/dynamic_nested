@@ -1,6 +1,6 @@
 {
   "name": "dynamic_nested",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Add/Remove nested associations dynamically in forms that generates markup like Phoenix Framework.",
   "main": "./static/dynamic_nested.js",
   "scripts": {
