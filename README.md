@@ -34,7 +34,7 @@ In order to get it working, the following attributes must be added in the markup
 Also, make sure to initialize this script after importing it on your application.
 
 ```JS
-import DynamicNested from 'dynamic-nested'
+import DynamicNested from 'dynamic_nested'
 
 document.querySelectorAll('[dynamic-nested]').forEach(element => DynamicNested(element))
 ```
