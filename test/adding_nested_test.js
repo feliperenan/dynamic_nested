@@ -30,7 +30,8 @@ afterEach(() => {
 
 test('adds a new nested association markup incrementing +1 from the previous index', () => {
   const element = document.querySelector('[dynamic-nested]')
-  const dynamicNested = new DynamicNested(element)
+
+  new DynamicNested(element)
 
   // Simulates a User clicks on add button.
   document.querySelector('[dynamic-nested-add]').click()
@@ -61,6 +62,27 @@ test('adds a new nested association markup incrementing +1 from the previous ind
   expect(element).not.toContainElement(
     element.querySelector('#user_colors_1_id')
   )
+})
+
+test('copy selected values from multiple select after user interaction', () => {
+  const element = document.querySelector('[dynamic-nested]')
+
+  new DynamicNested(element)
+
+  const multipleSelect = document.querySelector('#user_tags_0_id') 
+
+  // Simulates the first tag being selected.
+  multipleSelect.options[0].selected = true
+
+  // Simulates the second tag being unselected.
+  multipleSelect.options[1].selected = false
+
+  // Simulates a User clicks on add button.
+  document.querySelector('[dynamic-nested-add]').click()
+
+  expect(
+    element.querySelector('#user_tags_1_id')
+  ).toHaveValue(['1', '3'])
 })
 
 test('supports callbacks beforeClone and afterAdd', () => {
