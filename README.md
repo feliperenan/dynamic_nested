@@ -24,7 +24,7 @@ In order to get it working, the following attributes must be added in the markup
      # PS: generate hidden fields inside rows group to handle them easily.
      = for {key, value} <- row.hidden do
        = hidden_input c, key, value: value, dynamic_nested_field_id: true
-    <%= text_input c, :name %>
+     <%= text_input c, :name %>
      <button type="button" dynamic-nested-remove>Remove</button>
    <% end %>
  <% end %>

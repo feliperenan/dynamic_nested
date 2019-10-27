@@ -17,7 +17,7 @@
  *       # PS: generate hidden fields manually for handling them easily.
  *       = for {key, value} <- c.hidden do
  *         = hidden_input c, key, value: value, dynamic_nested_field_id: true
- *      <%= text_input c, :name %>
+ *       <%= text_input c, :name %>
  *       <button type="button" dynamic-nested-remove>Remove</button>
  *     <% end %>
  *   <% end %>
